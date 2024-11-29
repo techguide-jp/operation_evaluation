@@ -4,10 +4,15 @@ import { Evaluation } from "../types/evaluation";
 
 const notion = new Client({ auth: NOTION_API_KEY });
 
-export async function addRecordToNotion(evaluation: Evaluation, userName: string, timeUnit: string, comment: string = "") {
+export async function addRecordToNotion(
+  evaluation: Evaluation,
+  recordName: string = new Date().toLocaleString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(/\//g, '-'),
+  timeUnit: string = new Date().toISOString(),
+  comment: string = ""
+): Promise<void> {
   console.log("Notion Record Data:", {
-    名前: userName,
-    日時: new Date().toISOString(),
+    名前: recordName,
+    日時: recordName,
     単位: timeUnit,
     評価: evaluation,
     コメント: comment,
@@ -18,7 +23,10 @@ export async function addRecordToNotion(evaluation: Evaluation, userName: string
       properties: {
         名前: {
           type: "title",
-          title: [{ text: { content: userName || "匿名" } }],
+          title: [{
+            type: "text",
+            text: { content: recordName }
+          }],
         },
         日時: {
           type: "date",
@@ -26,7 +34,7 @@ export async function addRecordToNotion(evaluation: Evaluation, userName: string
         },
         単位: {
           type: "select",
-          select: { name: timeUnit },
+          select: { name: '30分' },
         },
         評価: {
           type: "select",
@@ -41,5 +49,6 @@ export async function addRecordToNotion(evaluation: Evaluation, userName: string
     console.log("Record added to Notion:", response);
   } catch (error) {
     console.error("Failed to add record to Notion:", error);
+    throw error;
   }
 }

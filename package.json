@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "nodemon src/index.ts"
+    "start": "ts-node src/index.ts"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.15",

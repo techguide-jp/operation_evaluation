@@ -18,7 +18,7 @@ RUN npm install
 COPY . .
 
 # nodemonをグローバルにインストール
-RUN npm install -g nodemon
+RUN npm install -g nodemon ts-node
 
 # 修正：ngrokの設定をアップグレードし、起動コマンドを調整
-CMD ["sh", "-c", "ngrok update && ngrok authtoken ${NGROK_AUTHTOKEN} && ngrok http 3003 && nodemon src/index.ts"]
+CMD ["sh", "-c", "ngrok config upgrade && ngrok authtoken ${NGROK_AUTHTOKEN} && ngrok http 3003 & npx ts-node src/index.ts"]

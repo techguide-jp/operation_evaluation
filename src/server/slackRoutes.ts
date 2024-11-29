@@ -4,16 +4,14 @@ import { handleSlackResponse } from "../handlers/slackHandler";
 const router = express.Router();
 
 // Slackのアクションを受信するエンドポイント
-router.post("/slack/actions", async (req, res) => {
+router.get("/slack/actions", async (req, res) => {
   try {
-    const payload = JSON.parse(req.body);
+    console.log("Query params:", req.query);
+    const evaluation = req.query.evaluation as string;
+    const comment = req.query.comment ? req.query.comment as string : "";
     //console.log("Received Slack payload:", payload);
 
-    const userName = payload.user.name; // Extract userName from payload
-    const timeUnit = payload.actions[0].value; // Extract timeUnit from payload
-    const comment = payload.actions[1]?.value || ""; // Extract comment from payload if available
-
-    await handleSlackResponse(payload.evaluation, userName, timeUnit, comment);
+    await handleSlackResponse(evaluation, comment);
 
     res.status(200).send("評価が記録されました。ありがとうございます！");
   } catch (error) {
