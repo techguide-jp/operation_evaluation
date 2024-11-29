@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3003:3003"
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+      - NOTION_API_KEY=${NOTION_API_KEY}
+      - NOTION_DATABASE_ID=${NOTION_DATABASE_ID}
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
