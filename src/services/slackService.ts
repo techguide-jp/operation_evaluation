@@ -1,5 +1,21 @@
 import axios from "axios";
 
+interface SlackAction {
+  name: string;
+  text: string;
+  type: string;
+  url: string;
+}
+
+function createSlackAction(name: string, evaluation: string, publicUrl: string): SlackAction {
+  return {
+    name: name,
+    text: evaluation,
+    type: "button",
+    url: `${publicUrl}/slack/actions?evaluation=${encodeURIComponent(evaluation)}`,
+  };
+}
+
 export async function sendSlackMessage(publicUrl: string) {
   try {
     const message = {
@@ -10,10 +26,10 @@ export async function sendSlackMessage(publicUrl: string) {
           fallback: "評価を選択してください",
           callback_id: "evaluation_action",
           actions: [
-            { name: "evaluation", text: "Best", type: "button", url: `${publicUrl}/slack/actions?evaluation=Best` },
-            { name: "evaluation", text: "Better", type: "button", url: `${publicUrl}/slack/actions?evaluation=Better` },
-            { name: "evaluation", text: "Needs Improvement", type: "button", url: `${publicUrl}/slack/actions?evaluation=Needs Improvement` },
-            { name: "evaluation", text: "Worst", type: "button", url: `${publicUrl}/slack/actions?evaluation=Worst` },
+            createSlackAction("evaluation", "Best", publicUrl),
+            createSlackAction("evaluation", "Better", publicUrl),
+            createSlackAction("evaluation", "Needs Improvement", publicUrl),
+            createSlackAction("evaluation", "Worst", publicUrl),
           ],
         },
       ],
