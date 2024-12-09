@@ -13,7 +13,7 @@ router.get("/slack/actions", async (req, res) => {
 
     await handleSlackResponse(evaluation, comment);
 
-    res.status(200).send("評価が記録されました。ありがとうございます！");
+    res.render("slackResponse", { evaluation, comment });
   } catch (error) {
     console.error("Error in /slack/actions:", error);
     res.status(500).send("エラーが発生しました。もう一度お試しください。");

@@ -4,6 +4,7 @@ import slackRoutes from "./server/slackRoutes";
 import { startCronScheduler } from "./scheduler/cronScheduler";
 import { sendSlackMessage } from "./services/slackService";
 import { getNgrokPublicUrl } from "./utils/ngrokUtils";
+import path from "path";
 
 const app = express();
 export const PORT = process.env.PORT || 3003;
@@ -11,6 +12,10 @@ export const PORT = process.env.PORT || 3003;
 // ミドルウェア設定
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// テンプレートエンジンの設定
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 // ルート設定
 app.use(slackRoutes);
